@@ -17,6 +17,9 @@
  * All Rights Reserved.
  */
 
+/*
+ * 跟文件和文件夹相关的基本都在这里了
+ * */
 #ifndef _GDK_STORAGE_H_
 #define _GDK_STORAGE_H_
 

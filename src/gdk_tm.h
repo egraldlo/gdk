@@ -16,7 +16,9 @@
  * Copyright August 2008-2013 MonetDB B.V.
  * All Rights Reserved.
  */
-
+/*
+ * 事务处理
+ * */
 #ifndef _GDK_TM_H_
 #define _GDK_TM_H_
 

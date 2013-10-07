@@ -39,6 +39,9 @@
 /*
  * @- Mthreads Routine implementations
  */
+/*
+ * 系统多线程相关
+ * */
 #include "monetdb_config.h"
 #include "gdk_system.h"
 
