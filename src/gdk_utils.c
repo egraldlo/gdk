@@ -31,6 +31,7 @@
 #include "gdk_private.h"
 #include "mutils.h"
 
+
 static char GDKdbpathStr[PATHLENGTH] = { "dbpath" };
 
 BAT *GDKkey = NULL;
@@ -100,12 +101,22 @@ GDKenvironment(str dbpath)
 		fprintf(stderr, "!GDKenvironment: database name too long.\n");
 		return 0;
 	}
+	monet_print(dbpath);
+	monet_print("here must be absolute path");
 	if (!MT_path_absolute(dbpath)) {
+		/*
+		 * added by casa
+		 * 检查数据库路径是不是绝对路径
+		 * */
 		fprintf(stderr, "!GDKenvironment: directory not an absolute path: %s.\n", dbpath);
 		return 0;
 	}
+	monet_print("before strncpy");
+	monet_print(GDKdbpathStr);
 	strncpy(GDKdbpathStr, dbpath, PATHLENGTH);
 	/* make coverity happy: */
+	monet_print("after strncpy");
+	monet_print(GDKdbpathStr);
 	GDKdbpathStr[PATHLENGTH - 1] = 0;
 	return 1;
 }
@@ -364,10 +375,13 @@ MT_init(void)
 	}
 #elif defined(HAVE_SYSCONF) && defined(_SC_PAGESIZE)
 	_MT_pagesize = (size_t)sysconf(_SC_PAGESIZE);
+	monet_integer("_MT_pagesize",_MT_pagesize);
 #endif
 	if (_MT_pagesize <= 0)
 		_MT_pagesize = 4096;	/* default */
-
+	/*
+	 * 有个缺省值：page的大小
+	 * */
 #ifdef _MSC_VER
 	{
 		MEMORYSTATUSEX memStatEx;
@@ -424,6 +438,11 @@ MT_init(void)
 	}
 #elif defined(HAVE_SYSCONF) && defined(_SC_PHYS_PAGES)
 	_MT_npages = (size_t)sysconf(_SC_PHYS_PAGES);
+	monet_integer("_MT_npages",_MT_npages);
+	/*
+	 * 缺省页的个数
+	 * */
+
 # if SIZEOF_SIZE_T == SIZEOF_INT
 	/* Bug #2935: the value returned here can be more than what can be
 	 * addressed on Solaris, so cap the value */
@@ -946,6 +965,7 @@ GDKinit(opt *set, int setlen)
 	char buf[16];
 
 	/* some sanity checks (should also find if symbols are not defined) */
+	monet_print("check the bytes of system");
 	assert(sizeof(char) == SIZEOF_CHAR);
 	assert(sizeof(short) == SIZEOF_SHORT);
 	assert(sizeof(int) == SIZEOF_INT);
@@ -988,6 +1008,7 @@ GDKinit(opt *set, int setlen)
 	mnstr_init();
 	MT_init_posix();
 	THRinit();
+	monet_print("init the thread set");
 #ifndef NATIVE_WIN32
 	BATSIGinit();
 #endif
@@ -1000,10 +1021,13 @@ GDKinit(opt *set, int setlen)
 
 	/* Mserver by default takes 80% of all memory as a default */
 	GDK_mem_maxsize = GDK_mem_maxsize_max = (size_t) ((double) MT_npages() * (double) MT_pagesize() * 0.815);
+	monet_integer("Mserver by default takes 80% of all memory as a default, the size is \M ",GDK_mem_maxsize/(1024*1024));
+
 #ifdef NATIVE_WIN32
 	GDK_mmap_minsize = GDK_mem_maxsize_max;
 #else
 	GDK_mmap_minsize = MIN( 1<<30 , GDK_mem_maxsize_max/6 );
+	monet_integer("Mserver minimal, the size is \M ",GDK_mmap_minsize/(1024*1024));
 	/*   per op:  2 args + 1 res, each with head & tail  =>  (2+1)*2 = 6  ^ */
 #endif
 	GDK_mem_bigsize = 1024*1024;
@@ -1092,12 +1116,14 @@ GDKinit(opt *set, int setlen)
 	GDKnr_threads = GDKgetenv_int("gdk_nr_threads", 0);
 	if (GDKnr_threads == 0)
 		GDKnr_threads = MT_check_nr_cores();
+	monet_integer("检测出核的个数：GDKnr_threads",GDKnr_threads);
 #ifdef NATIVE_WIN32
 	GDK_mmap_minsize /= (GDKnr_threads ? GDKnr_threads : 1);
 #else
 	/* WARNING: This unconditionally overwrites above settings, */
 	/* incl. setting via MonetDB env. var. "gdk_mmap_minsize" ! */
 	GDK_mmap_minsize = MIN( 1<<30 , (GDK_mem_maxsize_max/6) / (GDKnr_threads ? GDKnr_threads : 1) );
+	monet_integer("GDK_mmap_minsize: ",GDK_mmap_minsize/(1024*1024));
 	/*    per op:  2 args + 1 res, each with head & tail  =>  (2+1)*2 = 6  ^ */
 #endif
 
@@ -1197,7 +1223,8 @@ GDKlockHome(void)
 	 */
 	if (chdir(GDKdbpathStr) < 0) {
 		char GDKdirStr[PATHLENGTH];
-
+		printf("the gdkdirstr is: ");
+		monet_print(GDKdirStr);
 		/* The DIR_SEP at the end of the path is needed for a
 		 * successful call to GDKcreatedir */
 		snprintf(GDKdirStr, PATHLENGTH, "%s%c", GDKdbpathStr, DIR_SEP);
@@ -1211,9 +1238,13 @@ GDKlockHome(void)
 		GDKlockFile = 0;
 		GDKfatal("GDKlockHome: Database lock '%s' denied\n", GDKLOCK);
 	}
+	/*
+	 * 新建了一个文件，往里面放了什么东西？
+	 * */
 	if ((GDKlockFile = fopen(GDKLOCK, "rb+")) == NULL) {
 		GDKfatal("GDKlockHome: Could not open %s\n", GDKLOCK);
 	}
+	monet_stop();
 	if (fgets(buf, 1024, GDKlockFile) && (p = strchr(buf, ':')))
 		*p = 0;
 	if (p) {
@@ -1225,6 +1256,7 @@ GDKlockHome(void)
 	/*
 	 * We have the lock, are the only process currently allowed in
 	 * this section.
+	 * 枷锁之后并发就只有这一个process了
 	 */
 	MT_init();
 	OIDinit();

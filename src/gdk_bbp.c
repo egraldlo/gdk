@@ -966,6 +966,7 @@ BBPheader(FILE *fp, oid *BBPoid, int *OIDsize)
 void
 BBPinit(void)
 {
+	monet_print("init the bbp");
 	FILE *fp = NULL;
 	char buf[4096];
 	struct stat st;
@@ -975,7 +976,9 @@ BBPinit(void)
 	int oidsize;
 	oid BBPoid;
 
+	monet_print("init the thread lock");
 	MT_lock_init(&GDKunloadLock, "GDKunloadLock");
+	monet_print("init the condition lock");
 	MT_cond_init(&GDKunloadCond, "GDKunloadCond");
 
 	/* first move everything from SUBDIR to BAKDIR (its parent) */
@@ -984,8 +987,9 @@ BBPinit(void)
 
 	/* try to obtain a BBP.dir from bakdir */
 	GDKfilepath(buf, BAKDIR, "BBP", "dir");
-
+	monet_print(buf);
 	if (stat(buf, &st) == 0) {
+		monet_print("in the '=0' way ");
 		/* backup exists; *must* use it */
 		GDKfilepath(buf, BATDIR, "BBP", "dir");
 		if (recover_dir(stat(buf, &st) == 0) < 0)
@@ -1012,8 +1016,10 @@ BBPinit(void)
 
 	/* scan the BBP.dir to obtain current size */
 	BBPlimit = 0;
+	monet_print("memset the bbp structure");
 	memset(BBP, 0, sizeof(BBP));
 	BBPsize = 1;
+	monet_print("BBPsize is the bat numbers");
 
 	bbpversion = BBPheader(fp, &BBPoid, &oidsize);
 
