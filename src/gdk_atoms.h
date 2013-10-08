@@ -20,6 +20,10 @@
 #ifndef _GDK_ATOMS_H_
 #define _GDK_ATOMS_H_
 
+/*
+ * 原子操作
+ * */
+
 #define MAXATOMS	128
 
 /*
