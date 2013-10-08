@@ -23,6 +23,10 @@
 #include "gdk_calc_private.h"
 #include <math.h>
 
+/*
+ * grouped aggregates
+ * */
+
 /* grouped aggregates
  *
  * The following functions take two to four input BATs and produce a
