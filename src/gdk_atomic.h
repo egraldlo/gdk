@@ -45,6 +45,7 @@
  * _sht, _int, or _lng to the above names.
  */
 
+//cao
 #ifndef _GDK_ATOMIC_H_
 #define _GDK_ATOMIC_H_
 
