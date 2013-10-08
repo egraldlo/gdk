@@ -47,6 +47,10 @@
 #include "gdk.h"
 #include "gdk_private.h"
 
+/*
+ * BAT的操作都在这里
+ * */
+
 #define updateloop(bn, b, func)						\
 	do {								\
 		BATiter bi = bat_iterator(b);				\
