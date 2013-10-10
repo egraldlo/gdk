@@ -285,7 +285,11 @@ HEAPalloc(Heap *h, size_t nitems, size_t itemsize)
 		return -1;
 
 	if (h->filename) {
+		monet_double_print("BATDIR",BATDIR);
+		monet_double_print("h->filename",h->filename);
+
 		GDKfilepath(nme, BATDIR, h->filename, NULL);
+		monet_double_print("nme",nme);
 		/* if we're going to use mmap anyway (size >=
 		 * GDK_mem_bigsize -- see GDKmallocmax), and the file
 		 * we want to use already exists and is large enough

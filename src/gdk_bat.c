@@ -241,6 +241,7 @@ BATsetdims(BAT *b)
 static BATstore *
 BATnewstorage(int ht, int tt, BUN cap)
 {
+	monet_print("in the BATnewstorage");
 	BATstore *bs;
 	BAT *bn;
 
@@ -256,6 +257,7 @@ BATnewstorage(int ht, int tt, BUN cap)
 	BATsetdims(bn);
 	bn->U->capacity = cap;
 
+	monet_print("申请存储两个column的存储空间，在磁盘上建立文件！");
 	/* alloc the main heaps */
 	if (ht && HEAPalloc(&bn->H->heap, cap, bn->H->width) < 0) {
 		return NULL;
@@ -289,14 +291,22 @@ BATnewstorage(int ht, int tt, BUN cap)
 		return NULL;
 	}
 	DELTAinit(bn);
+	monet_print("将新建的bat存储在bbp中cache起来");
 	BBPcacheit(bs, 1);
+
 	return bs;
 }
 
 BAT *
 BATnew(int ht, int tt, BUN cap)
 {
-	BATstore *bs;
+	/*
+	 * 新建文件BAT，参数意义：
+	 * ht: 头部的类型
+	 * tt: 尾部的类型
+	 * cap:初始的BUN的个数
+	 * */
+	BATstore *bs;//BATstore就是这个BAT相关信息的存储
 
 	assert(cap <= BUN_MAX);
 	assert(ht != TYPE_bat);
@@ -312,6 +322,7 @@ BATnew(int ht, int tt, BUN cap)
 	/* and in case we don't have assertions enabled: limit the size */
 	if (cap > BUN_MAX)
 		cap = BUN_MAX;
+	monet_integer("cap",cap);
 	bs = BATnewstorage(ht, tt, cap);
 	return bs == NULL ? NULL : &bs->B;
 }
