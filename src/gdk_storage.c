@@ -34,6 +34,9 @@
  * database server. Otherwise, IO operations are likely to fail. This
  * is accomplished by setting the GID and UID upon system start.
  */
+/*
+ * 这个文件较为简单，其实就是在对磁盘和内存上的文件进行操作
+ * */
 #include "monetdb_config.h"
 #include "gdk.h"
 #include "gdk_private.h"
@@ -610,6 +613,9 @@ BATsave(BAT *bd)
 BAT *
 BATload_intern(bat i, int lock)
 {
+	/*
+	 * 这个函数非常的重要，这个的功能是load一个BAT具体的数据到内存当中
+	 * */
 	bat bid = ABS(i);
 	str nme = BBP_physical(bid);
 	BATstore *bs = DESCload(bid);

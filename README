@@ -20,3 +20,14 @@
    with me about gdk or monetdb, please email to zhangleicasa@gmail.com, we 
    can learn monetdb together.
 
+
+----------------------------------------------------------------------------
+doing:
+	gdk_storage.c/gdk_storage.h: line 1200, easy
+	
+----------------------------------------------------------------------------
+todo:
+1, check out a how a bat persist on the disk?
+
+----------------------------------------------------------------------------
+done:
