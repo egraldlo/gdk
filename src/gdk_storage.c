@@ -951,6 +951,9 @@ print_format(col_format_t *c, const void *v)
 static int
 print_header(int argc, col_format_t *argv, stream *s)
 {
+	/*
+	 * 输出头部
+	 * */
 	int k;
 	str buf;
 	int len;
@@ -992,6 +995,9 @@ print_header(int argc, col_format_t *argv, stream *s)
 int
 BATprint(BAT *b)
 {
+	/*
+	 * 输出BAT，但是和stream的方式有什么区别呢？这里有两种输出BATprint[f]的方式
+	 * */
 	ERRORcheck(b == NULL, "BATprint: BAT expected");
 	return BATmultiprintf(GDKstdout, 2, &b, TRUE, 0, 1);
 }
@@ -999,6 +1005,7 @@ BATprint(BAT *b)
 int
 BATprintf(stream *s, BAT *b)
 {
+	monet_integer("输出BAT的信息");
 	ERRORcheck(b == NULL, "BATprintf: BAT expected");
 	return BATmultiprintf(s, 2, &b, TRUE, 0, 1);
 }
@@ -1015,8 +1022,12 @@ int
 BATmultiprintf(stream *s,	/* output stream */
 	       int argc,	/* #ncolumns = #nbats +  */
 	       BAT *argv[],	/* the bats 2b printed */
-	       int printhead,	/* boolean: print the head column? */
-	       int order,	/* respect order of bat X (X=0 is none) */
+	       int printhead,	/* boolean: print the head column?
+	       * 是否输出head
+	       */
+	       int order,	/* respect order of bat X (X=0 is none)
+	       * 是否输出拍过序呢？
+	       */
 	       int printorder	/* boolean: print the orderby column? */
     )
 {
@@ -1080,6 +1091,9 @@ BATmultiprintf(stream *s,	/* output stream */
 		BAT *b = argv[0];
 		BUN p, q;
 		BATiter bi = bat_iterator(b);
+		/*
+		 * 这里是bat的iterator
+		*/
 
 		BATloop(b, p, q) {
 			print_format(cp[0], BUNhead(bi, p));
@@ -1094,6 +1108,9 @@ BATmultiprintf(stream *s,	/* output stream */
 		MULTIJOIN_SYNCED(ret) = 1;
 	} else {
 		ret = BATmultijoin(argc, argv, (RowFcn) print_line, (void *) s, value_fcn, (void **) cp, order);
+		/*
+		 * 链接，用于输出
+		 * */
 	}
       /*
        * Cleanup.
