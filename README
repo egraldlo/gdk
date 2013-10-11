@@ -1,4 +1,4 @@
-1, the gdk is the database storage kernel of monetdb: www.monetdb.org.
+1, the gdk is the database storage kernel of cwi:monetdb: www.monetdb.org.
    And you must make first, then get the executive file. it's easy to 
    abstract it from the monetdb system. But it's hard to understand it well,
    monetdb is a pretty good in-memory database.
