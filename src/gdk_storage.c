@@ -772,6 +772,11 @@ BATdelete(BAT *b)
 	return 0;
 }
 
+/**************************下面是已经弄明白作用的代码******************************/
+/*
+ * 下面是monetdb进行输出的一些函数，这些函数除了简单的格式之外。要用到一些高级特性，比如
+ * multi-join,这种multi-join是based on heads
+ * */
 /*
  * @+ Printing and debugging
  * Printing BATs is based on the multi-join on heads. The multijoin
@@ -823,6 +828,9 @@ BATdelete(BAT *b)
  * employs qsort() to order the Cartesian product on the matched tail
  * values.
  */
+/*
+ * 输出线条
+ * */
 #define LINE(s,	X)	do {						\
 				int n=X-1;				\
 				if (mnstr_write(s, "#", 1, 1) != 1)	\
@@ -842,6 +850,9 @@ BATdelete(BAT *b)
 
 typedef int (*strFcn) (str *s, int *len, const void *val);
 
+/*
+ * 输出格式的结构提
+ * */
 typedef struct {
 	int tabs;		/* tab width of output */
 	strFcn format;		/* tostr function */
@@ -855,6 +866,9 @@ typedef struct {
 static int
 print_nil(char **dst, int *len, const void *dummy)
 {
+	/*
+	 * 输出格式
+	 * */
 	(void) dummy;
 	if (*len < 3) {
 		if (*dst)
@@ -871,6 +885,9 @@ print_nil(char **dst, int *len, const void *dummy)
 static int
 print_tabwidth(BAT *b, str title, col_format_t *c)
 {
+	/*
+	 * 同样在输出格式
+	 * */
 	strFcn tostr = printfcn(b);
 	BUN cnt = BATcount(b);
 	int max, t = BATttype(b);
@@ -901,6 +918,9 @@ print_tabwidth(BAT *b, str title, col_format_t *c)
 static void
 print_line(stream *s, col_format_t **l)
 {
+	/*
+	 * 也是在输出格式
+	 * */
 	col_format_t *c = *(l++);
 
 	if (mnstr_write(s, "[ ", 2, 1) != 1)
@@ -944,6 +964,9 @@ print_line(stream *s, col_format_t **l)
 static void
 print_format(col_format_t *c, const void *v)
 {
+	/*
+	 * 输出格式
+	 * */
 	if (c->format)
 		c->len = (*c->format) (&c->buf, &c->size, v);
 }
