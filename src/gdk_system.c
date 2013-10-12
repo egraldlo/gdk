@@ -40,7 +40,8 @@
  * @- Mthreads Routine implementations
  */
 /*
- * 系统多线程相关
+ * 系统多线程相关,和多线程的同步有关的condition, lock, semaphore的操作
+ * 还有部分汇编代码
  * */
 #include "monetdb_config.h"
 #include "gdk_system.h"

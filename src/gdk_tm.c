@@ -19,7 +19,7 @@
 
 /*
  * @a M. L. Kersten, P. Boncz, N. J. Nes
- *
+ * 事务相关操作
  * @* Transaction management
  * The Transaction Manager maintains the buffer of (permanent) BATS
  * held resident.  Entries from the BAT buffer are always accessed by
@@ -34,6 +34,7 @@
 
 /*
  * The physical (disk) commit protocol is handled mostly by
+ * 物化提交协议被BBPsync掌控，一旦提交成功，
  * BBPsync. Once a commit succeeded, there is the task of removing
  * ex-persistent bats (those that still were persistent in the
  * previous commit, but were made transient in this transaction).
@@ -137,6 +138,7 @@ epilogue(int cnt, bat *subcommit)
  * @- TMcommit
  * global commit without any multi-threaded access assumptions, thus
  * taking all BBP locks.  It creates a new database checkpoint.
+ * 产生一个新的database检测点
  */
 int
 TMcommit(void)

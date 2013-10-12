@@ -22,6 +22,7 @@
  *
  * @* Utilities
  * The utility section contains functions to initialize the Monet
+ * 初始化moentdb数据库系统，内存分配详细和一个基本的系统日志模式
  * database system, memory allocation details, and a basic system
  * logging scheme.
  */
@@ -84,7 +85,7 @@ static int GDKgetHome(void);
  * that making a typing error in the configuration file may be
  * unnoticed for a long time.  Syntax errors are immediately flagged,
  * though.
- *
+ * monetdb的配置文件和monetdb的初始化的环境信息处理
  * Since the GDK kernel moves into the database directory, we need to
  * keep the absolute path to the MonetDB config file for top-levels to
  * access its information.
@@ -183,7 +184,7 @@ GDKsetenv(str name, str value)
  * session went on.  The lower layers merely store error information
  * on the file.  It should not be used for crash recovery, because
  * this should be dealt with on a per client basis.
- *
+ * 系统的日志处理
  * A system log can be maintained in the database to keep track of
  * session and crash information. It should regularly be refreshed to
  * avoid disk overflow.
@@ -238,6 +239,7 @@ GDKlog(const char *format, ...)
  * The current version simply catches signals and prints a warning.
  * It should be extended to cope with the specifics of the interrupt
  * received.
+ * 中断处理？
  */
 #if 0				/* these are unused */
 static void
@@ -272,12 +274,16 @@ BATSIGinit(void)
 #endif
 
 #ifdef SIGPIPE
+	/*在信号发生的时候忽略这个信号*/
 	(void) signal(SIGPIPE, SIG_IGN);
 #endif
 #ifdef __SIGRTMIN
 	(void) signal(__SIGRTMIN + 1, SIG_IGN);
 #endif
 #ifdef SIGHUP
+	/* 当信号发生的时候是执行第二个参数为函数指针指向的函数
+	 * 这个SIGHUP信号是链接断开信号
+	 * */
 	(void) signal(SIGHUP, MT_global_exit);
 #endif
 #ifdef SIGINT
@@ -576,7 +582,7 @@ GDKmemdump(void)
 
 
 /*
- * @+ Malloc
+ * @+ Malloc内存分配
  * Malloc normally maps through directly to the OS provided
  * malloc/free/realloc calls. Where possible, we want to use the
  * -lmalloc library on Unix systems, because it allows to influence
@@ -1010,6 +1016,7 @@ GDKinit(opt *set, int setlen)
 	THRinit();
 	monet_print("init the thread set");
 #ifndef NATIVE_WIN32
+	monet_print("信号系统的初始化");
 	BATSIGinit();
 #endif
 #ifdef WIN32
@@ -1201,7 +1208,7 @@ MT_Lock GDKtmLock;
 #endif
 
 /*
- * @+ Concurrency control
+ * @+ Concurrency control并发控制
  * Concurrency control requires actions at several levels of the
  * system.  First, it should be ensured that each database is
  * controlled by a single server process (group). Subsequent attempts

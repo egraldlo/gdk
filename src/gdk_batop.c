@@ -19,23 +19,28 @@
 
 /*
  * @a M. L. Kersten, P. Boncz, S. Manegold, N. Nes, K.S. Mullender
- * @* Common BAT Operations
+ * @* Common BAT Operations BAT的操作
  * This module contains the following BAT algebra operations:
  * @itemize
  * @item bulk updates
+ * 块更新
  * multi-insert, multi-delete, multi-replace
  * @item common aggregates
+ * 聚集函数
  * min, max and histogram
  * @item oid column manipulations
  * mark, number and split.
+ * bat的选择操作
  * @item bat selections
  * select, slice, sample, fragment and restrict.
  * Note: non hash-/index-supported scanselects have been "outsourced"
  * to gdk_scanselect.mx as the fully expanded code grows too large to
  * be (conveniently) compiled in a single file.
  * @item bat partitioning
+ * bat的partition操作
  * hash partition, range partitioning
  * @end itemize
+ * 我们考虑了所有由內联代码产生的开销，尽量的减少时间开销
  * We factor out all possible overhead by inlining code.  This
  * includes the macros BUNhead and BUNtail, which do a test to see
  * whether the atom resides in the buns or in a variable storage
