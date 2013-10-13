@@ -16,7 +16,16 @@
  * Copyright August 2008-2013 MonetDB B.V.
  * All Rights Reserved.
  */
-
+/*
+ * 三万行代码的大文件，主要是relational 的操作，其中有各种join算法
+ * 这里面的算法包括：
+ * merge-join : BATmergejoin
+ * hashjoin   : BAThashjoin
+ * fetchjoin  : 这是一种什么join
+ * thetajoin  : 这是一种什么join
+ * semijoin   : BATsemijoin
+ * antijoin   : 这是一种什么join
+ * */
 #line 23 "gdk_relop.mx"
 /*
  * @a M. L. Kersten, P. Boncz, S. Manegold
@@ -39,7 +48,7 @@ static BAT *BATnlthetajoin(BAT *l, BAT *r, int op, BUN estimate);
  * @+ Join Algorithms
  * All join related operations have the same prelude to check
  * domain compatibility and to creates the BAT to hold the result.
- *
+ * 所有的join算法都有相同的前戏，就是检查兼容性和创建BAT去hold结果
  * We do some dynamic effort to estimate the result size. Good
  * estimates enhance performance and reduce the memory hunger of the join.
  * Method: we sample on l, and join on the whole r. This macro is called by
