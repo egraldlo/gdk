@@ -21,7 +21,9 @@
 #include "gdk.h"
 #include "gdk_private.h"
 #include <math.h>
-
+/*
+ *  这个文件是选择操作，选择操作很多
+ * */
 #ifdef _MSC_VER
 #define nextafter	_nextafter
 float nextafterf(float x, float y);
