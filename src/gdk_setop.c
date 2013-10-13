@@ -64,7 +64,9 @@
  * The @emph{kintersect(l,r)} is used also as implementation for the
  * @emph{semijoin()}.
  */
-
+/*
+ * 数据库的集合操作
+ * */
 
 #line 70 "gdk_setop.mx"
 #include "monetdb_config.h"
