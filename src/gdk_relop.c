@@ -22,9 +22,9 @@
  * merge-join : BATmergejoin
  * hashjoin   : BAThashjoin
  * fetchjoin  : 这是一种什么join
- * thetajoin  : 这是一种什么join
+ * thetajoin  : >=,<=,>,<
  * semijoin   : BATsemijoin
- * antijoin   : 这是一种什么join
+ * antijoin   : 不等连接
  * */
 #line 23 "gdk_relop.mx"
 /*
