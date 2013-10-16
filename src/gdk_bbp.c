@@ -16,7 +16,9 @@
  * Copyright August 2008-2013 MonetDB B.V.
  * All Rights Reserved.
  */
-
+/*
+ * bbp的操作，
+ * */
 /*
  * @a M. L. Kersten, P. Boncz, N. J. Nes
  * @* BAT Buffer Pool (BBP)
