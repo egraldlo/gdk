@@ -21,7 +21,8 @@
 #define _GDK_ATOMS_H_
 
 /*
- * 原子操作
+ * 原子操作, 前面那个atomic.h中主要是get set add sub incr dec cas操作，
+ * 这个里面主要是比较的原子操作，两个文件都包含每种数据类型
  * */
 
 #define MAXATOMS	128
@@ -171,11 +172,13 @@ gdk_export const ptr ptr_nil;
  * represent an octet, a 16-bit int, a 32-bit int, a 32-bit float, a
  * 64-bit double, a 64-bit int, and a pointer-sized location of a
  * char-buffer (ended by a zero char).
+ * GDK中的数据类型
  *
  * In contrast, the types (bit, ptr, bat, oid) are derived types. They
  * do not occur in the switches. The ATOMstorage macro maps them
  * respectively onto a @code{ bte}, @code{ int} (pointers are 32-bit),
  * @code{ int}, and @code{ int}. OIDs are 32-bit.
+ * 这些派生类型要被装换为基本数据类型bte, int ,int
  *
  * This approach makes it tractable to switch to 64-bits OIDs, or to a
  * fully 64-bits OS easily. One only has to map the @code{ oid} and
@@ -186,6 +189,7 @@ gdk_export const ptr ptr_nil;
  * @code{ align} properties of their father.  The same goes for the
  * ADT functions HASH, CMP, PUT, NULL, DEL, LEN, and HEAP. So, a
  * derived type differs in only two ways from its father:
+ * 抽象数据类型ADT里面的比较操作包括HASH CMP PUT DEL LEN HEAP
  * @table @code
  * @item [string representation]
  * the only two ADT operations specific for a derived type are FROMSTR

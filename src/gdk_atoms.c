@@ -20,6 +20,7 @@
 /*
  * @a M. L. Kersten, P. Boncz
  * @* Atomic types
+ * 原子数据类型
  * The Binary Association Table library assumes efficient
  * implementation of the atoms making up the binary association.  This
  * section describes the preliminaries for handling both built-in and

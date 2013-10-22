@@ -45,7 +45,7 @@
  * _sht, _int, or _lng to the above names.
  */
 
-//cao
+// 这个原子文件和那个原子文件有什么差别呢？
 #ifndef _GDK_ATOMIC_H_
 #define _GDK_ATOMIC_H_
 
