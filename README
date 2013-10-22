@@ -30,6 +30,7 @@ todo:
 2, 为什么有common的aggregation和grouped aggregation?
 3, gdk_atomic.h gdk_atoms.h以及其.c文件中的基本数据类型以及操作，有关基本数据类型
    抽象数据类型(adt)，和派生数据类型的相关解释和函数
+4, gdk_aglin.c对齐以及视图的处理
 
 ----------------------------------------------------------------------------
 done:

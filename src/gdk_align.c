@@ -22,6 +22,7 @@
 /*
  * @a Peter Boncz, Niels Nes
  * @* BAT Alignment
+ * 对于n元操作产生的bat，有必要去在head上对齐。尤其是涉及到的bat会影响到page的activity
  * For BATs that result from a n-ary relational scheme it may help to
  * align the BATs on their head value. In particular, it permits
  * replacing a hash-join by a merge-join, which is significantly
@@ -32,6 +33,7 @@
  * For orthogonality, we support alignment between arbitrary columns
  * (head or tail).
  *
+ * 所有的标准GDK的操作以他们自己的方式更新对齐信息，举个例子
  * All standard GDK set-calls update the alignment info in their
  * respective ways. For example, the routine @emph{BUNclustercopy}
  * shuffles the first argument, such that the BUNs are in the same
@@ -188,11 +190,13 @@ ALIGNsynced(BAT *b1, BAT *b2)
 
 /*
  * @+ View BATS
+ * 一般的创建一个对于某个bat的视图要用到viewcreate函数
  * The general routine for getting a 'view' BAT upon another BAT is
  * @emph{VIEWcreate}. On this @emph{#read-only} BAT (there is kernel
  * support for this), you can then make vertical slices.  Use
  * @emph{VIEWhead} for this.
  *
+ * 可以创建一个写视图，在parent上的更新自动的体现在View上，记住视图BAT从未改变
  * It is possible to create a view on a writable BAT. Updates in the
  * parent are then automatically reflected in the VIEW.  Note that the
  * VIEW bat itself can never be modified.
@@ -354,6 +358,7 @@ VIEWcreate_(BAT *h, BAT *t, int slice_view)
 	return bn;
 }
 
+// 创建视图
 BAT *
 VIEWcreate(BAT *h, BAT *t)
 {
@@ -506,6 +511,7 @@ BATmaterializet(BAT *b)
 	return BATmirror(BATmaterializeh(BATmirror(b)));
 }
 
+// 物化BAT
 BAT *
 BATmaterialize(BAT *b)
 {
@@ -516,6 +522,7 @@ BATmaterialize(BAT *b)
 /*
  * The @#VIEWunlink@ routine cuts a reference to the parent. Part of the view
  * destroy sequence.
+ * 剪断和parent的联系
  */
 static void
 VIEWunlink(BAT *b)
@@ -567,6 +574,7 @@ VIEWunlink(BAT *b)
 /*
  * Materialize a view into a normal BAT. If it is a slice, we really
  * want to reduce storage of the new BAT.
+ * 物化一个视图进一个正常的BAT中，如果是slice的，减少其所占空间的大小
  */
 BAT *
 VIEWreset(BAT *b)
@@ -781,6 +789,7 @@ VIEWbounds(BAT *b, BAT *view, BUN l, BUN h)
 
 /*
  * Destroy a view.
+ * 删除一个视图
  */
 void
 VIEWdestroy(BAT *b)
