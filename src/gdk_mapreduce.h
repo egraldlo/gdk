@@ -17,6 +17,7 @@
  * All Rights Reserved.
  */
 
+// 此文件中为mapreduce的操作，但是针对多核的mapreduce
 #ifndef _GDK_MAPREDUCE_H_
 #define _GDK_MAPREDUCE_H_
 
