@@ -21,6 +21,7 @@
  * @a M. L. Kersten, P. Boncz, N. Nes
  * @* BAT Module
  * In this Chapter we describe the BAT implementation in more detail.
+ * 在这节中我们更详细的描述了bat的实现
  * The routines mentioned are primarily meant to simplify the library
  * implementation.
  *
@@ -34,6 +35,7 @@
  * fields required for storage.
  *
  * The general layout of the BAT in this implementation is as follows.
+ *
  * Each BAT comes with a heap for the loc-size buns and, optionally,
  * with heaps to manage the variable-sized data items of both
  * dimensions.  The buns are assumed to be stored as loc-size objects.
