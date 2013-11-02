@@ -1,5 +1,6 @@
 #define PRINT
 //#define STOP
+#define CPU_FRE 3200000000
 
 int monet_print(const char *str){
 #ifdef PRINT
@@ -26,3 +27,4 @@ int monet_integer(const char *str,size_t i){
 	printf("%s :%d\n",str,i);
 	return 0;
 }
+
