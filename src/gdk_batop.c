@@ -1098,7 +1098,9 @@ BATordered_rev(BAT* b)
 }
 
 /* figure out which sort function is to be called
+ * 指出哪个排序方法会被采用
  * stable sort can produce an error (not enough memory available),
+ * 稳定排序GDKssort会产生错误，但是“快速”排序GDKqsort不会产生错误
  * "quick" sort does not produce errors */
 static gdk_return
 do_sort(void *h, void *t, const void *base, size_t n, int hs, int ts, int tpe,

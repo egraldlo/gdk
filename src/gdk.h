@@ -1638,6 +1638,7 @@ gdk_export int BATmultiprintf(stream *f, int argc, BAT *argv[], int printoid, in
  *
  * When working in a main-memory situation, clustering of data on
  * disk-pages is not important. Whenever mmap()-ed data is used
+ * 不管mmap是否被频繁使用，减少page faults的数据是个热门话题
  * intensively, reducing the number of page faults is a hot issue.
  *
  * The above functions rearrange data in MonetDB heaps (used for
@@ -1646,8 +1647,11 @@ gdk_export int BATmultiprintf(stream *f, int argc, BAT *argv[], int printoid, in
  * algorithms work efficiently also in a disk-oriented context.
  *
  * The BATsort functions return a copy of the input BAT, sorted in
+ * BATsort方法返回一个输入的bat的拷贝，按照head column升序排序，BATorderd开始
  * ascending order on the head column. BATordered starts a check on
+ * 一个check看head是不是有序的，结果返回被存在BAT的hsorted字段中。BATorder和
  * the head values to see if they are ordered. The result is returned
+ * BATsort是一样的，但是BATorder没有拷贝
  * and stored in the hsorted field of the BAT.  BATorder is similar to
  * BATsort, but sorts the BAT itself, rather than returning a copy
  * (BEWARE: this operation destroys the delta
