@@ -399,7 +399,8 @@ int
 MT_msync(void *p, size_t off, size_t len, int mode)
 {
 	int ret = msync(((char *) p) + off, len, (mode & MMAP_SYNC) ? MS_SYNC : ((mode & MMAP_ASYNC) ? MS_ASYNC : MS_INVALIDATE));
-
+	// msync()函数实现磁盘文件内容与共享内存区中的内容一致，即同步操作
+	// 进程在映射空间的对共享内容的改变并不直接写回到磁盘文件中，往往在调用munmap()后才执行该操作
 #ifdef MMAP_DEBUG
 	mnstr_printf(GDKstdout,
 		      "#msync(" LLFMT "," LLFMT ",%s) = %d\n",

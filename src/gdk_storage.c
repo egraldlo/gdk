@@ -89,6 +89,7 @@ GDKcreatedir(const char *dir)
 			closedir(dirp);
 		} else {
 			GDKcreatedir(path);
+			// 在磁盘上建立一个目录，目录的权限为755
 			ret = mkdir(path, 0755);
 			IODEBUG THRprintf(GDKstdout, "#mkdir %s = %d\n", path, ret);
 			if (ret < 0 && (dirp = opendir(path)) != NULL) {
@@ -123,6 +124,7 @@ GDKremovedir(const char *dirname)
 		IODEBUG THRprintf(GDKstdout, "#unlink %s = %d\n", path, ret);
 	}
 	closedir(dirp);
+	// 删除一个目录
 	ret = rmdir(dirname);
 	if (ret < 0) {
 		GDKsyserror("GDKremovedir: rmdir(%s) failed.\n", dirname);
@@ -269,6 +271,7 @@ GDKextend(const char *fn, size_t size)
 
 /*
  * @+ Save and load.
+ * 一个BAT的保存和上载
  * The BAT is saved on disk in several files. The extension DESC
  * denotes the descriptor, BUNs the bun heap, and HHEAP and THEAP the
  * other heaps. The storage mechanism off a file can be memory mapped
@@ -287,9 +290,12 @@ GDKsave(const char *nme, const char *ext, void *buf, size_t size, storage_t mode
 	if (mode == STORE_MMAP) {
 		/*
 		 * Only dirty pages must be written to disk.
+		 * 只有修改的页才能被写到磁盘上，不修改的block会仍被mmap到文件
 		 * Unchanged block will still be mapped on the file,
 		 * reading those will be cheap.  Only the changed
+		 * 只有修改的block现在被mmap到交换区域
 		 * blocks are now mapped to swap space.  PUSHED OUT:
+		 *
 		 * due to rather horrendous performance caused by
 		 * updating the image on disk.
 		 *

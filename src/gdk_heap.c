@@ -753,6 +753,7 @@ HEAPsave_intern(Heap *h, const char *nme, const char *ext, const char *suffix)
 	return GDKsave(nme, ext, h->base, h->free, store);
 }
 
+// HEAPsave->HEAPsave_intern->GDKsave
 int
 HEAPsave(Heap *h, const char *nme, const char *ext)
 {
