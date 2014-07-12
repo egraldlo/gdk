@@ -958,6 +958,7 @@ atom_io(flt, Int, int)
 /*
  * @+ String Atom Implementation
  * The Built-in type string is partly handled in an atom extension
+ * string类型是
  * library. The main reason is to limit the number of built-in types
  * in the BAT library kernel. Moreover, an extra indirection for a
  * string is less harmful than for manipulation of, e.g. an int.
